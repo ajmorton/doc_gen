@@ -15,15 +15,13 @@
 #       - Date, inputDate, type, subaccount, acctPeriod, UsedInDocuments
 #   - confirm that empty lines (with no variable can be skipped)
 
-# reading in
-# writing out
 
+import read_in
 import write_content
 
-import os
 import sys
-import csv
 import re
+
 from collections import OrderedDict
 from random import randrange, seed
 
@@ -61,39 +59,21 @@ def parseVal(val, vars_dict):
 
     return val
 
-# readInAccounts reads in a csv containing a list of accounts used in the assignment
-def readInAccounts(accounts_path, accounts_dict, vars_dict):
-    acctReader = csv.reader(open(accounts_path, newline=''), delimiter=',', quotechar='"')
-    next(acctReader)
+def calculate_assignment(vars_dict, accounts_dict):
+    unique_vars_dict = OrderedDict()
+    unique_accounts_dict = OrderedDict()
 
-    for acct in acctReader:
-        # transform to useful format
-        (acctName, acctType, startingVal) = (acct[0], acct[1], int(acct[2]))
-        accounts_dict[acctName] = startingVal
-        # TODO add type of account
+    for account in accounts_dict:
+        (accountType, openingBalance) = accounts_dict[account]
+        unique_accounts_dict[account] = int(openingBalance)
 
+    for var in vars_dict:
+        (val, transType, account) = vars_dict[var]
 
-# readInVars reads from a csv file of all variables defined in the assignment
-# and assigns them values (constants, derived or random)
-def readInVars(vars_path, accounts_dict, vars_dict):
+        val = parseVal(val, unique_vars_dict)
 
-    varReader = csv.reader(open(vars_path, newline=''), delimiter=',', quotechar='"')
-    next(varReader)
-    for row in varReader:
-        # print(row)
-        # transform to useful format
-        (varName, val, transType, account) = (row[0], row[4], row[6], row[7])
-
-        if varName == "":
-            #skip lines that don't referring to variable
-            continue
-        # print("{}, {}, {}, {}".format(varName, val, transType, account))
-
-        val = parseVal(val, vars_dict)
-
-        if varName not in vars_dict:
-            vars_dict[varName] = val
-
+        if var not in unique_vars_dict:
+            unique_vars_dict[var] = val
 
         if account:
             if account not in accounts_dict:
@@ -101,11 +81,12 @@ def readInVars(vars_path, accounts_dict, vars_dict):
 
             if transType == "CR":
                 # print("{} credited {}".format(account, val))
-                accounts_dict[account] += val
+                unique_accounts_dict[account] += val
             if transType == "DR":
                 # print("{} debited {}".format(account, val))
-                accounts_dict[account] -= val
+                unique_accounts_dict[account] -= val
 
+    return (unique_vars_dict, unique_accounts_dict)
 
 # read in an accounts list and a var list for a single student, then print values
 # out to said students folder. Random values in the lists a seeded by the
@@ -114,18 +95,27 @@ def readInVars(vars_path, accounts_dict, vars_dict):
 #      With a fair bit of refactoring we could potentially mitigate this.
 #      However, I can see interdependence of rng state across students causing
 #      issues
-def read_csv(SID, version, accounts_path, vars_path):
-    try:
-        vars_dict = OrderedDict()
-        accounts_dict = OrderedDict()
+def read_csv(student_path, accounts_path, vars_path):
 
-        seed(SID + version)
-        readInAccounts(accounts_path, accounts_dict, vars_dict)
-        readInVars(vars_path, accounts_dict, vars_dict)
-        write_content.printDicts(SID, accounts_dict, vars_dict)
-    except UnicodeDecodeError as e:
-        print("Unicode decoding error:\n\tplease check input for non utf8"
-              " characters (é, ü, â)")
+    # read in vars_dict, don't evaluate values
+    vars_dict    = read_in.readInVars(vars_path)
+
+    # read in accounts_dict, initial states
+    accounts_dict = read_in.readInAccounts(accounts_path)
+
+    students = read_in.readInStudents(student_path)
+
+    # use vars_dict and accounts_dict to generate unique per student versions
+
+    for student in students:
+        (SID, version) = student
+        try:
+            seed(SID + version)
+            (unique_vars_dict, unique_accounts_dict) = calculate_assignment(vars_dict, accounts_dict)
+            write_content.printDicts(SID, unique_accounts_dict, unique_vars_dict)
+        except UnicodeDecodeError as e:
+            print("Unicode decoding error:\n\tplease check input for non utf8"
+                  " characters (é, ü, â)")
 
 
 if __name__ == "__main__":
@@ -134,8 +124,4 @@ if __name__ == "__main__":
               "student_list, accounts_path, vars_path")
     else:
         [student_list, accounts_path, vars_path] = sys.argv[1:]
-
-        studentReader = csv.reader(open(student_list, newline=''), delimiter=',', quotechar='"')
-        for student in studentReader:
-            [SID, version] = student
-            read_csv(SID, version, accounts_path, vars_path)
+        read_csv(student_list, accounts_path, vars_path)
