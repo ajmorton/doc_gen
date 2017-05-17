@@ -1,0 +1,76 @@
+VariableName,InputDate,OutputDate,Type,InputValue,OutputValue,EntryType,Account,SubAccount,AcctPeriod,UsedInDocuments
+InitialInvestment,PeriodStartDate,1/7/16,Constant,10000,10000,CR,Share Capital,,1,1
+InitialInvestmentCash,PeriodStartDate,1/7/16,Ref,$InitialInvestment,10000,DR,Cash,,1,1
+StationWagonValue,PeriodStartDate,1/7/16,Constant,2500,2500,CR,Share Capital,,1,2
+StationWagonValueAsset,PeriodStartDate,1/7/16,Ref,$StationWagonValue,2500,DR,Motor Vehicles,,1,2
+Loan,PeriodStartDate,1/7/16,Constant,6000,6000,CR,Interest Bearing Loans,,1,2
+LoanCash,PeriodStartDate,1/7/16,Ref,$Loan,6000,DR,Cash,,1,2
+InsuranceCost,PeriodStartDate,1/7/16,Random,"Random(2000, 4000, 100)",3000,CR,Accounts Payable,AAMI,1,3
+InsuranceCostExp,PeriodStartDate,1/7/16,Ref,$InsuranceCost,3000,DR,Prepaid Expense,,1,3
+PremisesHire,PeriodStartDate,1/7/16,Random,"Random(800, 1200, 50)",1050,CR,Accounts Payable,Hi-Road,1,4
+PremisesHireExp,PeriodStartDate,1/7/16,Ref,$PremisesHire,1050,DR,Prepaid Expense,,1,4
+KitchenAid1MixerPrice,PeriodStartDate + 2d,3/7/16,Random,"Random(500, 700, 50)",600,,,,1,5
+KitchenAid1MixerQty,PeriodStartDate + 2d,3/7/16,Constant,6,6,,,,1,5
+KitchenAid1MixerSubtotal,PeriodStartDate + 2d,3/7/16,Ref,$KitchenAid1MixerPrice * $KitchenAid1MixerQty,3600,,,,1,5
+KitchenAid1PressPrice,PeriodStartDate + 2d,3/7/16,Random,"Random(180, 250, 5)",210,,,,1,5
+KitchenAid1PressQty,PeriodStartDate + 2d,3/7/16,Random,"Random(2, 4, 1)",2,,,,1,5
+KitchenAid1PressSubtotal,PeriodStartDate + 2d,3/7/16,Ref,$KitchenAid1PressPrice * $KitchenAid1PressQty,420,,,,1,5
+KitchenAid1Subtotal,PeriodStartDate + 2d,3/7/16,Ref,$KitchenAid1MixerSubtotal + $KitchenAid1PressSubtotal,4020,,,,1,5
+KitchenAid1Freight,PeriodStartDate + 2d,3/7/16,Constant,150,150,,,,1,5
+KitchenAid1Total,PeriodStartDate + 2d,3/7/16,Ref,$KitchenAid1Subtotal+ $KitchenAid1Freight,4170,CR,Accounts Payable,KitchenAid,1,5
+KitchenAid1InventoryMixer,PeriodStartDate + 2d,3/7/16,Ref,$KitchenAid1MixerSubtotal + ($KitchenAid1Freight * ($KitchenAid1MixerSubtotal / $KitchenAid1Subtotal)),3734.328358,DR,Inventory,Mixer,1,5
+KitchenAid1InventoryPress,PeriodStartDate + 2d,3/7/16,Ref,$KitchenAid1PressSubtotal + ($KitchenAid1Freight * ($KitchenAid1PressSubtotal / $KitchenAid1Subtotal)),435.6716418,DR,Inventory,Press,1,5
+Roband1VitaQty,PeriodStartDate + 5d,6/7/17,Constant,5,5,,,,1,6
+Roband1VitaPrice,PeriodStartDate + 5d,6/7/17,Constant,450,450,,,,1,6
+Roband1VitaSubtotal,PeriodStartDate + 5d,6/7/17,Ref,$Roband1VitaPrice * $Roband1VitaQty,2250,,,,1,6
+Roband1GelatoQty,PeriodStartDate + 5d,6/7/17,Constant,5,5,,,,1,6
+Roband1GelatoPrice,PeriodStartDate + 5d,6/7/17,Constant,950,950,,,,1,6
+Roband1GelatoSubtotal,PeriodStartDate + 5d,6/7/17,Ref,$Roband1GelatoPrice * $Roband1GelatoQty,4750,,,,1,6
+Roband1Subtotal,PeriodStartDate + 5d,6/7/17,Ref,$Roband1VitaSubtotal + $Roband1GelatoSubtotal,7000,,,,1,6
+Roband1Freight,PeriodStartDate + 5d,6/7/17,Constant,200,200,,,,1,6
+Roband1Total,PeriodStartDate + 5d,6/7/17,Ref,$Roband1Subtotal + $Roband1Freight,7200,,,,1,6
+Roband1InventoryVita,PeriodStartDate + 5d,6/7/17,Ref,$Roband1VitaSubtotal + $Roband1Freight * ($Roband1VitaSubtotal / $Roband1Subtotal),2314.285714,DR,Inventory,Vita,1,6
+Roband1InventoryGelato,PeriodStartDate + 5d,6/7/17,Ref,$Roband1GelatoSubtotal + $Roband1Freight * ($Roband1GelatoSubtotal / $Roband1Subtotal),4885.714286,DR,Inventory,Gelato,1,6
+KitchenAid2MixerReturnQty,PeriodStartDate + 5d,6/7/17,Constant,1,1,,,,1,7
+KitchenAid2MixerReturnTotal,PeriodStartDate + 5d,6/7/17,Ref,$KitchenAid2MixerReturnQty * $KitchenAid1MixerPrice,600,DR,Accounts Payable,KitchenAid,1,7
+KitchenAid2MixerReturnTotalInv,PeriodStartDate + 5d,6/7/17,Ref,$KitchenAid1InventoryPress / $KitchenAid1PressQty,622.3880597,CR,Inventory,,1,7
+KitchenAid2MixerReturnTotalExp,PeriodStartDate + 5d,6/7/17,Ref,$KitchenAid2MixerReturnTotalInv - $KitchenAid2MixerReturnTotal,22.3880597,DR,Write-off expense,,1,7
+SalesInvoice1GelatoQty,PeriodStartDate + 11d,12/7/16,Constant,1,1,,,,1,8
+SalesInvoice1GelatoPrice,PeriodStartDate + 11d,12/7/16,Constant,2400,2400,,,,1,8
+SalesInvoice1GelatoSubtotal,PeriodStartDate + 11d,12/7/16,Ref,$SalesInvoice1GelatoQty * $SalesInvoice1GelatoPrice,2400,,,,1,8
+SalesInvoice1MixerQty,PeriodStartDate + 11d,12/7/16,Constant,2,2,,,,1,8
+SalesInvoice1MixerPrice,PeriodStartDate + 11d,12/7/16,Ref,(11/6) * $KitchenAid1MixerPrice,1100,,,,1,8
+SalesInvoice1MixerSubtotal,PeriodStartDate + 11d,12/7/16,Ref,$SalesInvoice1MixerQty * $SalesInvoice1MixerPrice,2200,,,,1,8
+SalesInvoice1VitaQty,PeriodStartDate + 11d,12/7/16,Constant,2,2,,,,1,8
+SalesInvoice1VitaPrice,PeriodStartDate + 11d,12/7/16,Constant,950,950,,,,1,8
+SalesInvoice1VitaSubtotal,PeriodStartDate + 11d,12/7/16,Ref,$SalesInvoice1VitaQty * $SalesInvoice1VitaPrice,1900,,,,1,8
+SalesInvoice1Total,PeriodStartDate + 11d,12/7/16,Constant,6500,6500,DR,Accounts Receivable,Can Do Cafe,1,8
+SalesInvoice1TotalRev,PeriodStartDate + 11d,12/7/16,Ref,$SalesInvoice1Total,6500,CR,Sales Revenue,,1,8
+SalesInvoice1GelatoInv,PeriodStartDate + 11d,12/7/16,Ref,$Roband1GelatoPrice * $SalesInvoice1GelatoQty,950,CR,Inventory,Gelato,1,8
+SalesInvoice1MixerInv,PeriodStartDate + 11d,12/7/16,Ref,$KitchenAid1MixerPrice * $SalesInvoice1MixerQty,1200,CR,Inventory,Mixer,1,8
+SalesInvoice1VitaInv,PeriodStartDate + 11d,12/7/16,Ref,$Roband1VitaPrice * $SalesInvoice1VitaQty,900,CR,Inventory,Vita,1,8
+SalesInvoice1COGS,PeriodStartDate + 11d,12/7/16,Ref,$SalesInvoice1GelatoInv + $SalesInvoice1MixerInv + $SalesInvoice1VitaInv,3050,DR,Cost of Goods Sold,,1,8
+AutoRepairParts,PeriodStartDate + 11d,12/7/17,Constant,500,500,,,,1,9
+AutoRepairLabour,PeriodStartDate + 11d,12/7/17,Constant,270,270,,,,1,9
+AutoRepairSubTotal,PeriodStartDate + 11d,12/7/17,Ref,($AutoRepairParts + $AutoRepairLabour) / 1.1,700,DR,General Expenses,,1,9
+AutoRepairGST,PeriodStartDate + 11d,12/7/17,Ref,0.1 * $AutoRepairSubTotal,70,DR,GST Receivable,,1,9
+AutoRepairTotal,PeriodStartDate + 11d,12/7/17,Ref,$AutoRepairSubTotal + $AutoRepairGST,770,CR,Accounts Payable,,1,9
+AutoRepairPayment,PeriodStartDate + 11d,12/7/17,Ref,$AutoRepairTotal,770,DR,Accounts Payable,,1,9
+AutoRepairPaymentCash,PeriodStartDate + 11d,12/7/17,Ref,$AutoRepairTotal,770,CR,Cash,,1,9
+SalesInvoice2MixerQty,PeriodStartDate + 12d,13/7/16,Constant,1,1,,,,1,10
+SalesInvoice2MixerPrice,PeriodStartDate + 12d,13/7/16,Constant,1100,1100,,,,1,10
+SalesInvoice2MixerSubtotal,PeriodStartDate + 12d,13/7/16,Ref,$SalesInvoice2MixerQty * $SalesInvoice2MixerPrice,,,,,1,10
+SalesInvoice2VitaQty,PeriodStartDate + 12d,13/7/16,Constant,1,1,,,,1,10
+SalesInvoice2VitaPrice,PeriodStartDate + 12d,13/7/16,Constant,950,950,,,,1,10
+SalesInvoice2VitaSubtotal,PeriodStartDate + 12d,13/7/16,Ref,$SalesInvoice2VitaQty * $SalesInvoice2VitaPrice,,,,,1,10
+SalesInvoice2Total,PeriodStartDate + 12d,13/7/16,Constant,2050,2050,DR,Accounts Receivable,BB's Bakery,1,10
+SalesInvoice2TotalRev,PeriodStartDate + 12d,13/7/16,Ref,$SalesInvoice1Total,2050,CR,Sales Revenue,,1,10
+SalesInvoice2MixerInv,PeriodStartDate + 12d,13/7/16,Ref,$KitchenAid1MixerPrice * $SalesInvoice2MixerQty,600,CR,Inventory,Mixer,1,10
+SalesInvoice2VitaInv,PeriodStartDate + 12d,13/7/16,Ref,$Roband1VitaPrice * $SalesInvoice2VitaQty,450,CR,Inventory,Vita,1,10
+SalesInvoice2COGS,PeriodStartDate + 12d,13/7/16,Ref,$SalesInvoice2MixerInv + $SalesInvoice2VitaInv,1050,DR,Cost of Goods Sold,,1,10
+,,,,,,,,,,
+TotalRevenue1,EndOfPeriod,31/7/16,Ref,"SUM(AccountType=Revenue, Period=1)",8550,,,,1,
+TotalProfit1,EndOfPeriod,31/7/16,Ref,"$TotalRevenue1 - SUM(AccountType=Expense, Period=1)",3727.61194,,,,1,
+EarningsBeforeInterestAndTax1,EndOfPeriod,31/7/16,Ref,"$TotalProfit1 + SUM(Account=InterestExpense, Period=1) + SUM(Account=TaxExpense, Period=1)",3727.61194,,,,1,
+AssetBalance1,EndOfPeriod,31/7/16,Ref,"SUM(AccountType=Asset, Periods=[0,1])",37047.61194,,,,1,
+ReturnOnAssets1,EndOfPeriod,31/7/16,Ref,$EarningsBeforeInterestAndTax1 / $AssetBalance1,0.100616794,,,,1,

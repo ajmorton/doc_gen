@@ -1,0 +1,15 @@
+$(function(){
+  document.getElementById('SID').innerHTML = '0005'
+  document.getElementById('designUnit').innerHTML = '30'
+  document.getElementById('designQty').innerHTML = '21'
+  document.getElementById('designTotal').innerHTML = '630'
+  document.getElementById('devUnit').innerHTML = '30'
+  document.getElementById('devQty').innerHTML = '42'
+  document.getElementById('devTotal').innerHTML = '1260'
+  document.getElementById('seoUnit').innerHTML = '45'
+  document.getElementById('seoQty').innerHTML = '3'
+  document.getElementById('seoTotal').innerHTML = '135'
+  document.getElementById('subTotal').innerHTML = '2025'
+  document.getElementById('tax').innerHTML = '506.25'
+  document.getElementById('grandTotal').innerHTML = '2531.25'
+})

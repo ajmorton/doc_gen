@@ -1,0 +1,18 @@
+Account,Type,OpeningBalance
+Cash,Asset,0
+Motor Vehicles,Asset,0
+Cash,Asset,0
+Prepaid Expense,Asset,0
+Inventory,Asset,0
+Accounts Receivable,Asset,0
+GST Receivable,Asset,0
+Share Capital,Equity,0
+Share Capital,Equity,0
+General Expenses,Expense,0
+Write-off expense,Expense,0
+Cost of Goods Sold,Expense,0
+Interest Bearing Loans,Liability,0
+Accounts Payable,Liability,0
+Sales Revenue,Revenue,0
+Interest Expense,Expense,0
+Tax Expense,Expense,0
